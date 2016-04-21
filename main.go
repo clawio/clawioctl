@@ -27,8 +27,9 @@ func main() {
 	`
 	app.Commands = []cli.Command{
 		commands.ConfigureCommand,
+		commands.CleanCommand,
 		commands.WhoAmICommand,
-		commands.DownloadCommand,
+		commands.DataCommands,
 	}
 
 	app.Run(os.Args)

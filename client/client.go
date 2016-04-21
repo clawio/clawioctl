@@ -4,11 +4,14 @@ import (
 	"io/ioutil"
 	"net/http"
 	"sync"
+
+	"github.com/clawio/sdk"
 )
 
-type Config struct {
-	ClientID     string
-	ClientSecret string
+type Credentials struct {
+	AuthenticationServiceBaseURL string
+	ClientID                     string
+	ClientSecret                 string
 }
 
 type TokenStore interface {
@@ -35,7 +38,7 @@ func (s *fileTokenStore) Set(token string) error {
 	return ioutil.WriteFile(s.fn, []byte(token), 0600)
 }
 
-func NewClient(config *Config, source TokenStore) *http.Client {
+func NewClientWithAuth(config *Credentials, source TokenStore) *http.Client {
 	t := &transport{}
 	t.config = config
 	t.source = source
@@ -47,7 +50,7 @@ func NewClient(config *Config, source TokenStore) *http.Client {
 }
 
 type transport struct {
-	config *Config
+	config *Credentials
 	source TokenStore
 	base   http.RoundTripper
 }
@@ -56,8 +59,41 @@ type transport struct {
 // access token. If no token exists or token is expired,
 // tries to refresh/fetch a new token.
 func (t *transport) RoundTrip(req *http.Request) (*http.Response, error) {
+	// clone request to re-send it if auth fails.
+	reqCopy := cloneRequest(req)
 	token := t.source.Get()
 	req.Header.Set("Token", token)
 	res, err := t.base.RoundTrip(req)
+	if err != nil {
+		return res, err
+	}
+	// if res.StatusCode == 401 we get a new token and repeat the request
+	if res.StatusCode == http.StatusUnauthorized {
+		s := sdk.New(&sdk.ServiceEndpoints{AuthServiceBaseURL: t.config.AuthenticationServiceBaseURL}, nil)
+		if err != nil {
+			return res, err
+		}
+		token, _, err := s.Auth.Authenticate(t.config.ClientID, t.config.ClientSecret)
+		if err != nil {
+			return res, err
+		}
+		t.source.Set(token)
+		reqCopy.Header.Set("Token", token)
+		return t.base.RoundTrip(reqCopy)
+	}
 	return res, err
+}
+
+// cloneRequest returns a clone of the provided *http.Request.
+// The clone is a shallow copy of the struct and its Header map.
+func cloneRequest(r *http.Request) *http.Request {
+	// shallow copy of the struct
+	r2 := new(http.Request)
+	*r2 = *r
+	// deep copy of the Header
+	r2.Header = make(http.Header, len(r.Header))
+	for k, s := range r.Header {
+		r2.Header[k] = append([]string(nil), s...)
+	}
+	return r2
 }

@@ -1,12 +1,13 @@
 package log
 
 import (
-	"fmt"
-	"github.com/clawio/cli/config"
 	"log"
 	"os"
 	"os/user"
 	"path"
+
+	"github.com/clawio/cli/config"
+	jww "github.com/spf13/jWalterWeatherman"
 )
 
 func init() {
@@ -19,15 +20,18 @@ func init() {
 	if err := os.MkdirAll(configDir, 0755); err != nil {
 		log.Fatalln(err)
 	}
-	fd, err := os.OpenFile(config.CLILogFile, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.SetOutput(fd)
+	jww.SetLogThreshold(jww.LevelInfo)
+	jww.SetLogFile(config.CLILogFile)
+	/*
+		fd, err := os.OpenFile(config.CLILogFile, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.SetOutput(fd)
+	*/
 }
 
-func Println(v ...interface{}) { log.Println(v) }
+func Println(v ...interface{}) { jww.INFO.Println(v) }
 func Fatalln(v ...interface{}) {
-	fmt.Printf("Error performing the operation. See %q for more details.", config.CLILogFile)
-	log.Fatal(v)
+	jww.ERROR.Fatal(v)
 }

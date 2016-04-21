@@ -8,9 +8,9 @@ import (
 
 func getSDK() *sdk.SDK {
 	cfg := config.Get()
-	clientConfig := &client.Config{ClientID: cfg.Username, ClientSecret: cfg.Password}
+	clientCredentials := &client.Credentials{ClientID: cfg.Username, ClientSecret: cfg.Password}
 	tokenStore := client.NewFileTokenStore(config.CLICredentialsFile)
-	c := client.NewClient(clientConfig, tokenStore)
+	c := client.NewClientWithAuth(clientCredentials, tokenStore)
 	urls := &sdk.ServiceEndpoints{
 		AuthServiceBaseURL: cfg.AuthenticationServiceBaseURL,
 		DataServiceBaseURL: cfg.DataServiceBaseURL,

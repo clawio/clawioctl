@@ -101,7 +101,7 @@ func ask() *config.Config {
 	if dataServiceBaseURL != "" {
 		cfg.DataServiceBaseURL = dataServiceBaseURL
 	}
-	if metaDataServiceBaseURL == "" {
+	if metaDataServiceBaseURL != "" {
 		cfg.MetaDataServiceBaseURL = metaDataServiceBaseURL
 	}
 	return cfg
