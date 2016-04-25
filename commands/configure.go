@@ -10,13 +10,13 @@ import (
 	"github.com/clawio/cli/config"
 	"github.com/clawio/cli/log"
 	"github.com/codegangsta/cli"
+	"github.com/fatih/color"
 	"golang.org/x/crypto/ssh/terminal"
 )
 
 var ConfigureCommand = cli.Command{
-	Name:    "configure",
-	Aliases: []string{"conv", "con", "c"},
-	Usage:   "Configure ClawIO CLI options",
+	Name:  "configure",
+	Usage: "Configure ClawIO CLI options",
 	Description: `
  Configure ClawIO  CLI options. If  this command is  run with no  arguments,
  you will be  prompted for configuration values such as  your ClawIO credentials
@@ -50,7 +50,7 @@ func configure(c *cli.Context) {
 		log.Fatalln(err)
 	}
 	config.Set(cfg)
-	fmt.Printf("Configuration saved to %q", config.CLIConfigFile)
+	fmt.Println(color.GreenString("Configuration saved to %q", config.CLIConfigFile))
 }
 
 func ask() *config.Config {

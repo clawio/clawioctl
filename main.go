@@ -30,6 +30,7 @@ func main() {
 		commands.CleanCommand,
 		commands.WhoAmICommand,
 		commands.DataCommands,
+		commands.MetaDataCommands,
 	}
 
 	app.Run(os.Args)

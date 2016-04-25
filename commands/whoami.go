@@ -2,16 +2,17 @@ package commands
 
 import (
 	"fmt"
+	"io/ioutil"
+
 	"github.com/clawio/cli/config"
 	"github.com/clawio/cli/log"
 	"github.com/codegangsta/cli"
-	"io/ioutil"
+	"github.com/ryanuber/columnize"
 )
 
 var WhoAmICommand = cli.Command{
 	Name:      "whoami",
-	Aliases:   []string{"who"},
-	Usage:     "Display information of current logged in user",
+	Usage:     "Display account",
 	ArgsUsage: "",
 	Action:    whoami,
 }
@@ -24,9 +25,11 @@ func whoami(c *cli.Context) {
 		log.Fatalln(err)
 	}
 	log.Println(resp)
-	fmt.Printf("Username: %s\n", user.GetUsername())
-	fmt.Printf("Email: %s\n", user.GetEmail())
-	fmt.Printf("Display name: %s\n", user.GetDisplayName())
+	lines := []string{
+		"USERNAME|EMAIL|DISPLAYNAME",
+		fmt.Sprintf("%s|%s|%s", user.GetUsername(), user.GetEmail(), user.GetDisplayName()),
+	}
+	fmt.Println(columnize.SimpleFormat(lines))
 }
 
 func getToken() string {

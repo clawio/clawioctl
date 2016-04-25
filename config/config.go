@@ -11,7 +11,7 @@ import (
 const (
 	DefaultAuthenticationServiceBaseURL = "http://localhost:58001/clawio/v1/auth/"
 	DefaultDataServiceBaseURL           = "http://localhost:58002/clawio/v1/data/"
-	DefaultMetaDataServiceBaseURL       = "http://localhost:58003/clawio/v1/meta/"
+	DefaultMetaDataServiceBaseURL       = "http://localhost:58003/clawio/v1/metadata/"
 )
 
 var CLIConfigDir string

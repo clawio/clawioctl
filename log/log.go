@@ -7,6 +7,7 @@ import (
 	"path"
 
 	"github.com/clawio/cli/config"
+	"github.com/fatih/color"
 	jww "github.com/spf13/jWalterWeatherman"
 )
 
@@ -22,16 +23,9 @@ func init() {
 	}
 	jww.SetLogThreshold(jww.LevelInfo)
 	jww.SetLogFile(config.CLILogFile)
-	/*
-		fd, err := os.OpenFile(config.CLILogFile, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
-		if err != nil {
-			log.Fatal(err)
-		}
-		log.SetOutput(fd)
-	*/
 }
 
 func Println(v ...interface{}) { jww.INFO.Println(v) }
 func Fatalln(v ...interface{}) {
-	jww.ERROR.Fatal(v)
+	jww.ERROR.Fatal(color.RedString("%+v", v))
 }

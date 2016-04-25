@@ -1,11 +1,13 @@
 package commands
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/clawio/cli/config"
 	"github.com/clawio/cli/log"
 	"github.com/codegangsta/cli"
+	"github.com/fatih/color"
 )
 
 var CleanCommand = cli.Command{
@@ -20,4 +22,5 @@ func clean(c *cli.Context) {
 	if err := os.RemoveAll(config.CLIConfigDir); err != nil {
 		log.Fatalln(err)
 	}
+	fmt.Println(color.GreenString("%s", "Configuration cleaned!"))
 }
