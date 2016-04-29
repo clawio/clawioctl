@@ -6,7 +6,7 @@ import (
 	"os/user"
 	"path"
 
-	"github.com/clawio/cli/config"
+	"github.com/clawio/clawioctl/config"
 	"github.com/fatih/color"
 	jww "github.com/spf13/jWalterWeatherman"
 )

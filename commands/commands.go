@@ -1,8 +1,8 @@
 package commands
 
 import (
-	"github.com/clawio/cli/client"
-	"github.com/clawio/cli/config"
+	"github.com/clawio/clawioctl/client"
+	"github.com/clawio/clawioctl/config"
 	"github.com/clawio/sdk"
 )
 

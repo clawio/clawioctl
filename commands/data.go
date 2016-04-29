@@ -5,7 +5,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/clawio/cli/log"
+	"github.com/clawio/clawioctl/log"
 	"github.com/codegangsta/cli"
 	"github.com/fatih/color"
 )

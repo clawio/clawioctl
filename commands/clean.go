@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/clawio/cli/config"
-	"github.com/clawio/cli/log"
+	"github.com/clawio/clawioctl/config"
+	"github.com/clawio/clawioctl/log"
 	"github.com/codegangsta/cli"
 	"github.com/fatih/color"
 )

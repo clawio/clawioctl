@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/clawio/cli/commands"
+	"github.com/clawio/clawioctl/commands"
 	"github.com/codegangsta/cli"
 )
 
