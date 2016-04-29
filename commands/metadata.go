@@ -18,6 +18,8 @@ var MetaDataCommands = cli.Command{
 		ExamineObjectCommand,
 		ListTreeCommand,
 		InitCommand,
+		DeleteObjectCommand,
+		MoveObjectCommand,
 	},
 }
 
@@ -43,6 +45,21 @@ var ListTreeCommand = cli.Command{
 	Usage:     "List a tree",
 	ArgsUsage: "Usage: ls <pathspec>",
 	Action:    listTree,
+}
+var DeleteObjectCommand = cli.Command{
+	Name:      "rm",
+	Aliases:   []string{"r"},
+	Usage:     "Delete an object",
+	ArgsUsage: "Usage: rm <pathspec>",
+	Action:    deleteObject,
+}
+
+var MoveObjectCommand = cli.Command{
+	Name:      "mv",
+	Aliases:   []string{"r"},
+	Usage:     "Move an object",
+	ArgsUsage: "Usage: mv <sourcepathspec> <targetpathspec>",
+	Action:    moveObject,
 }
 
 func examineObject(c *cli.Context) {
@@ -91,4 +108,34 @@ func init2(c *cli.Context) {
 	}
 	log.Println(resp)
 	fmt.Println(color.GreenString("%s", "Home tree created!"))
+}
+
+func deleteObject(c *cli.Context) {
+	if c.Args().First() == "" {
+		fmt.Println(c.Command.ArgsUsage)
+		os.Exit(1)
+	}
+	sdk := getSDK()
+	resp, err := sdk.Meta.DeleteObject(c.Args().First())
+	if err != nil {
+		log.Fatalln(err)
+	}
+	log.Println(resp)
+	fmt.Println(color.GreenString("Deleted object %q!", c.Args().First()))
+}
+
+func moveObject(c *cli.Context) {
+	if len(c.Args()) < 2 {
+		fmt.Println(c.Command.ArgsUsage)
+		os.Exit(1)
+	}
+	sourcePath := c.Args().First()
+	targetPath := c.Args().Get(1)
+	sdk := getSDK()
+	resp, err := sdk.Meta.MoveObject(sourcePath, targetPath)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	log.Println(resp)
+	fmt.Println(color.GreenString("Moved object from %q to %q!", sourcePath, targetPath))
 }
