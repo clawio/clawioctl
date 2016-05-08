@@ -28,7 +28,6 @@ func main() {
 	app.Commands = []cli.Command{
 		commands.ConfigureCommand,
 		commands.CleanCommand,
-		commands.WhoAmICommand,
 		commands.DataCommands,
 		commands.MetaDataCommands,
 	}

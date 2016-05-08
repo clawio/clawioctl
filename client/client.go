@@ -62,7 +62,7 @@ func (t *transport) RoundTrip(req *http.Request) (*http.Response, error) {
 	// clone request to re-send it if auth fails.
 	reqCopy := cloneRequest(req)
 	token := t.source.Get()
-	req.Header.Set("Token", token)
+	req.Header.Set("Authorization", "Bearer "+token)
 	res, err := t.base.RoundTrip(req)
 	if err != nil {
 		return res, err
@@ -78,7 +78,7 @@ func (t *transport) RoundTrip(req *http.Request) (*http.Response, error) {
 			return res, err
 		}
 		t.source.Set(token)
-		reqCopy.Header.Set("Token", token)
+		reqCopy.Header.Set("Authorization", "Bearer "+token)
 		return t.base.RoundTrip(reqCopy)
 	}
 	return res, err
