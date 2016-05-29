@@ -74,7 +74,7 @@ func examineObject(c *cli.Context) {
 	}
 	log.Println(resp)
 	lines := []string{"PATHSPEC|TYPE|SIZE|MIMETYPE|CHECKSUM"}
-	line := fmt.Sprintf("%s|%d|%d|%s|%s",
+	line := fmt.Sprintf("%s|%s|%d|%s|%s",
 		info.PathSpec, info.Type, info.Size, info.MimeType, info.Checksum)
 	lines = append(lines, line)
 	fmt.Println(columnize.SimpleFormat(lines))
@@ -93,7 +93,7 @@ func listTree(c *cli.Context) {
 	log.Println(resp)
 	lines := []string{"PATHSPEC|TYPE|SIZE|MIMETYPE|CHECKSUM"}
 	for _, info := range infos {
-		line := fmt.Sprintf("%s|%d|%d|%s|%s",
+		line := fmt.Sprintf("%s|%s|%d|%s|%s",
 			info.PathSpec, info.Type, info.Size, info.MimeType, info.Checksum)
 		lines = append(lines, line)
 	}
