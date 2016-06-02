@@ -19,6 +19,7 @@ var MetaDataCommands = cli.Command{
 		ListTreeCommand,
 		InitCommand,
 		DeleteObjectCommand,
+		CreateTreeCommand,
 		MoveObjectCommand,
 	},
 }
@@ -46,6 +47,7 @@ var ListTreeCommand = cli.Command{
 	ArgsUsage: "Usage: ls <pathspec>",
 	Action:    listTree,
 }
+
 var DeleteObjectCommand = cli.Command{
 	Name:      "rm",
 	Aliases:   []string{"r"},
@@ -54,6 +56,13 @@ var DeleteObjectCommand = cli.Command{
 	Action:    deleteObject,
 }
 
+var CreateTreeCommand = cli.Command{
+	Name:      "mkdir",
+	Aliases:   []string{"m"},
+	Usage:     "Create a tree",
+	ArgsUsage: "Usage: mkdir <pathspec>",
+	Action:    createTree,
+}
 var MoveObjectCommand = cli.Command{
 	Name:      "mv",
 	Aliases:   []string{"r"},
@@ -122,6 +131,20 @@ func deleteObject(c *cli.Context) {
 	}
 	log.Println(resp)
 	fmt.Println(color.GreenString("Deleted object %q!", c.Args().First()))
+}
+
+func createTree(c *cli.Context) {
+	if c.Args().First() == "" {
+		fmt.Println(c.Command.ArgsUsage)
+		os.Exit(1)
+	}
+	sdk := getSDK()
+	resp, err := sdk.Meta.CreateTree(c.Args().First())
+	if err != nil {
+		log.Fatalln(err)
+	}
+	log.Println(resp)
+	fmt.Println(color.GreenString("Created tree %q!", c.Args().First()))
 }
 
 func moveObject(c *cli.Context) {
