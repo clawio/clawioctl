@@ -29,7 +29,7 @@ func main() {
 	app.Name = "clawioctl"
 	app.Usage = `
 	
-	The ClawIO Command Line Interface is the unified tool to manage your ClawIO services.
+	The ClawIO Controller is the unified tool to manage your ClawIO services from a terminal.
 	`
 	app.Commands = []cli.Command{
 		commands.ConfigureCommand,
