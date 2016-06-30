@@ -1,2 +1,1 @@
-# cli
-ClawIO Command Line Interface
+This repository contains the ClawIO Terminal Controller 
