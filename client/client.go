@@ -73,7 +73,7 @@ func (t *transport) RoundTrip(req *http.Request) (*http.Response, error) {
 		if err != nil {
 			return res, err
 		}
-		token, _, err := s.Auth.Authenticate(t.config.ClientID, t.config.ClientSecret)
+		token, _, err := s.Auth.Token(t.config.ClientID, t.config.ClientSecret)
 		if err != nil {
 			return res, err
 		}

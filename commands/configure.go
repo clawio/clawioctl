@@ -43,7 +43,7 @@ func configure(c *cli.Context) {
 	config.Set(cfg)
 
 	sdk := getSDK()
-	token, resp, err := sdk.Auth.Authenticate(cfg.Username, cfg.Password)
+	token, resp, err := sdk.Auth.Token(cfg.Username, cfg.Password)
 	log.Println(resp)
 	config.SetToken(token)
 	if err != nil {
